@@ -1,5 +1,6 @@
 import React from 'react';
 import {BasicStyles} from 'common'
+import Colors from 'common/Colors'
 export default class TextInput extends React.Component {
   constructor(props) {
     super(props);
@@ -20,6 +21,15 @@ export default class TextInput extends React.Component {
                 paddingBottom: 10,
                 fontWeight: 'bold'
               }}>{this.props.label}</label>
+            )
+          }
+
+          {
+            this.props.error && (
+              <label style={{
+                fontWeight: 'bold',
+                color: Colors.danger
+              }}>{this.props.error}</label>
             )
           }
 
