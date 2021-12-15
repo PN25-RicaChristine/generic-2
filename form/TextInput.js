@@ -9,13 +9,28 @@ export default class TextInput extends React.Component {
 
   render() {
     return (
-        <input
+        <div style={{
+          width: '100%',
+          float: 'left'
+        }}>
+          {
+            this.props.label && (
+              <label style={{
+                paddingTop: 10,
+                paddingBottom: 10,
+                fontWeight: 'bold'
+              }}>{this.props.label}</label>
+            )
+          }
+
+          <input
             type={this.props.type}
             placeholder={this.props.placeholder}
             style={{...BasicStyles.formControl, ...this.props.style}}
             value={this.props.value}
             onChange={(e) => this.props.onChange(e.value)}
             ></input>
+        </div>
     )
   }
 }
