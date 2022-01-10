@@ -1,24 +1,19 @@
 import React from 'react';
 import {BasicStyles} from 'common'
 import Colors from 'common/Colors'
+import Validator from 'services/validator'
 export default class TextInput extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      error: 'This is a test'
-    };
   }
 
-  validation = () => {
-    const { validation, value } = this.props;
-    if(validation && value){
-      if(validation.type == 'text'){
-        if(validation.size && value.length < validation.size){
-          this.setState({
-            error: 'Minimum required is ' + validation.size
-          })
-        }
-      }
+  validation = (e) => {
+    const { validation } = this.props;
+    let response = Validator.validate(e.target.value, validation, validation.column);
+    if(response == true){
+      this.props.onChange(e.target.value, null)
+    }else{
+      this.props.onChange(e.target.value, response)
     }
   }
 
@@ -44,15 +39,14 @@ export default class TextInput extends React.Component {
             style={{...BasicStyles.formControl, ...this.props.style}}
             value={this.props.value}
             onChange={(e) => {
-              this.props.onChange(e.value)
-              this.validation()
+              this.validation(e)
             }}
             ></input>
           {
-            this.state.error && (
+            this.props.validation.error && (
               <label style={{
                 color: Colors.danger
-              }}><b>Oops!</b> {this.state.error}</label>
+              }}><b>Oops!</b> {this.props.validation.error}</label>
             )
           }
         </div>
