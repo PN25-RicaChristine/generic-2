@@ -38,43 +38,47 @@ class Dropdown extends React.Component {
 
   render() {
     return (
+      <div style={{
+        borderRadius: 25,
+        height: 50,
+        float: 'left',
+        borderWidth: 0.5,
+        borderColor: Colors.primary,
+        borderStyle: 'solid',
+        marginRight: '1%',
+        marginBottom: 20,
+        paddingLeft: 20,
+        width: 125,
+        paddingRight: 20,
+        position: 'relative',
+        ...this.props.style
+      }}
+      className="href-link"
+      onClick={this.handleClick}
+      ref={ element => this.element = element }
+      >
         <div style={{
-            borderRadius: 25,
-            height: 50,
-            float: 'left',
-            borderWidth: 0.5,
-            borderColor: Colors.primary,
-            borderStyle: 'solid',
-            marginRight: '1%',
-            marginBottom: 20,
-            paddingLeft: 20,
-            width: 125,
-            paddingRight: 20,
-            position: 'relative',
-            ...this.props.style
-        }}
-        className="href-link"
-        onClick={this.handleClick}
-        ref={ element => this.element = element }
-        >
-          <div style={{
-            display: 'flex',
-            height: 50,
-            width: '100%',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-            <b style={{
-                paddingRight: 20
-            }}>{this.props.title}</b>
-            <FontAwesomeIcon icon={faPlus} size="2x" />
-          </div>
-            {
-                (this.props.menu && this.state.show) && (
-                    <RightClickMenu menu={this.props.menu} from="folder"/>
-                )
-            }
+          display: 'flex',
+          height: 50,
+          width: '100%',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <b style={{
+            paddingRight: 20
+          }}>{this.props.title}</b>
+          <FontAwesomeIcon icon={faPlus} size="2x" />
         </div>
+          {
+            (this.props.menu && this.state.show) && (
+              <RightClickMenu
+                menu={this.props.menu}
+                from="folder"
+                onCreate={() => {this.props.onCreate()}}
+                />
+            )
+          }
+      </div>
     )
   }
 }
