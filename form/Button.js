@@ -1,6 +1,7 @@
 import React from 'react';
 import {BasicStyles} from 'common'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 export default class Button extends React.Component {
   constructor(props) {
     super(props);
@@ -31,6 +32,15 @@ export default class Button extends React.Component {
                   paddingLeft: 20
                 }}>
                   <FontAwesomeIcon icon={this.props.iconRight} size="lg"/>
+                </span>
+              )
+            }
+            {
+              this.props.isLoading && (
+                <span style={{
+                  paddingLeft: 20
+                }}>
+                  <FontAwesomeIcon icon={faSpinner} size="lg" spin/>
                 </span>
               )
             }
