@@ -74,7 +74,7 @@ class Dropdown extends React.Component {
               <RightClickMenu
                 menu={this.props.menu}
                 from="folder"
-                onCreate={() => {this.props.onCreate()}}
+                onClick={(item) => {this.props.onClick(item)}}
                 />
             )
           }

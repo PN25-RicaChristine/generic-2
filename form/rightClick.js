@@ -10,27 +10,6 @@ class RightClick extends React.Component {
     };
   }
 
-  clickHandler = (item) => {
-      const { from, data } = this.props;
-      switch(item.title.toLowerCase()){
-          case 'view details': 
-            this.props.history.push('/folder')
-            break
-        case 'view file':
-            this.props.history.push('/file')
-            break
-        case 'rename':
-            break
-        case 'download':
-            break
-        case 'move to':
-            break
-        case 'go to analysis':
-            this.props.history.push('/analysis')
-            break
-      }
-  }
-
   render() {
     const { menu } = this.props;
     return (
@@ -61,7 +40,7 @@ class RightClick extends React.Component {
                     }}
                     className="href-link-dropdown"
                     key={index}
-                    onClick={() => this.clickHandler(item)}
+                    onClick={() => this.props.onClick(item)}
                     >
                         <FontAwesomeIcon icon={item.icon} size={'lg'}/>
                         <b style={{
