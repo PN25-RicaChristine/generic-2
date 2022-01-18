@@ -41,6 +41,7 @@ export default class TextInput extends React.Component {
             onChange={(e) => {
               this.validation(e)
             }}
+            onKeyPress={event => (event.key === 'Enter' && this.props.enterEnable) && this.props.onEnter()}
             ></input>
           {
             this.props.validation.error && (
