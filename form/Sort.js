@@ -1,12 +1,35 @@
 import React from 'react';
 import {BasicStyles} from 'common'
 import Colors from 'common/Colors'
+import { Form } from 'react-bootstrap'
 export default class Sort extends React.Component {
   constructor(props) {
     super(props);
   }
 
+  renderDropdown(){
+    const { options } = this.props;
+    return(
+      <Form.Group className="mb-3">
+        <Form.Select style={{
+          height: '50px',
+          width: '100%',
+          border: 'none',
+          borderRight: 'solid 1px ' + Colors.gray
+        }}>
+          {
+            (options.length > 0) && options.map((item) => (
+              <option>{item.title}</option>
+            ))
+          }
+        </Form.Select>
+      </Form.Group>
+    )
+  }
+
+
   render() {
+    const { options } = this.props;
     return (
         <div style={{
           width: '100%',
@@ -47,7 +70,9 @@ export default class Sort extends React.Component {
             lineHeight: '50px',
             textAlign: 'center'
           }}>
-            {this.props.label}
+            {
+              (options) && this.renderDropdown()
+            }
           </span>
           <input
             style={{
