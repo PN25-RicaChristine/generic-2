@@ -1,7 +1,7 @@
 import React from 'react';
 import {BasicStyles} from 'common'
 import Colors from 'common/Colors'
-export default class TextInput extends React.Component {
+export default class Stack extends React.Component {
   constructor(props) {
     super(props);
   }
