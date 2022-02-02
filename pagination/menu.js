@@ -19,7 +19,6 @@ export default class TextInput extends React.Component {
           data && data.map((item) => (
             <span
               style={{
-                paddingLeft: '20px',
                 paddingRight: '20px',
                 paddingTop: '15px',
                 paddingBottom: '15px',
