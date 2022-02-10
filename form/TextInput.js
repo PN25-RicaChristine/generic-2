@@ -43,6 +43,23 @@ export default class TextInput extends React.Component {
             }}
             onKeyPress={event => (event.key === 'Enter' && this.props.enterEnable) && this.props.onEnter()}
             ></input>
+            {
+              (this.props.checkBoxQty !== undefined || this.props.checkBoxQty > 0) && [...Array(this.props.checkBoxQty)].map((el, index) => (
+                <div>
+                    <input
+                        type='checkbox'
+                        placeholder='Mobile'
+                        style={{backgroundColor: 'transparent', marginTop: '10px', float: 'left'}}
+                        value={this.props.checkBoxValue !== undefined ? this.props.checkBoxValue[index] : null}
+                        onChange={(e) => {
+                          this.validation(e)
+                        }}
+                        onKeyPress={event => (event.key === 'Enter' && this.props.enterEnable) && this.props.onEnter()}
+                      ></input>
+                      <label style={{marginLeft: '8px', marginTop: '5px'}}>{this.props.checkBoxLabel[index]}</label>
+                </div>
+              ))
+            }
           {
             this.props.validation.error && (
               <label style={{
