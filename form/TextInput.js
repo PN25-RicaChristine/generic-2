@@ -2,6 +2,7 @@ import React from 'react';
 import {BasicStyles} from 'common'
 import Colors from 'common/Colors'
 import Validator from 'services/validator'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 export default class TextInput extends React.Component {
   constructor(props) {
     super(props);
@@ -33,16 +34,48 @@ export default class TextInput extends React.Component {
             )
           }
 
-          <input
-            type={this.props.type}
-            placeholder={this.props.placeholder}
-            style={{...BasicStyles.formControl, ...this.props.style}}
-            value={this.props.value}
-            onChange={(e) => {
-              this.validation(e)
+          <div
+            style={{
+              ...BasicStyles.formControlContainer,
+              ...this.props.style
             }}
-            onKeyPress={event => (event.key === 'Enter' && this.props.enterEnable) && this.props.onEnter()}
-            ></input>
+          >
+            <input
+              type={this.props.type}
+              placeholder={this.props.placeholder}
+              value={this.props.value}
+              style={{
+                ...BasicStyles.formControl,
+                width: this.props.iconRight ? '90%' : '100%',
+                float: 'left'
+              }}
+              onChange={(e) => {
+                this.validation(e)
+              }}
+              onKeyPress={event => (event.key === 'Enter' && this.props.enterEnable) && this.props.onEnter()}
+              ></input>
+
+            {
+              this.props.iconRight && (
+                <span style={{
+                  width: '10%',
+                  textAlign: 'center',
+                  float: 'left',
+                  display: 'flex',
+                  alignContent: 'center',
+                  alignItems: 'center',
+                  height: 50
+                }}
+                className="href-link"
+                onClick={() => {
+                  this.props.onClickRightIcon()
+                }}
+                >
+                  <FontAwesomeIcon icon={this.props.iconRight} size="lg"/>
+                </span>
+              )
+            }
+          </div>
           {
             this.props.validation.error && (
               <label style={{
