@@ -59,10 +59,9 @@ export default class TextInput extends React.Component {
               this.props.iconRight && (
                 <span style={{
                   width: '10%',
-                  textAlign: 'center',
                   float: 'left',
                   display: 'flex',
-                  alignContent: 'center',
+                  justifyContent: 'right',
                   alignItems: 'center',
                   height: 50
                 }}
