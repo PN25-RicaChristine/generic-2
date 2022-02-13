@@ -2,6 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
 import Colors from 'common/Colors'
+import Config from 'config'
 export default class Folder extends React.Component {
   constructor(props) {
     super(props);
@@ -25,7 +26,11 @@ export default class Folder extends React.Component {
       >
         {
             data && data.url && (
-                <div></div>
+              <img src={Config.API_URL + data.url} style={{
+                width: size,
+                height: size,
+                borderRadius: size / 2
+              }}/>
             )
         }
         {
