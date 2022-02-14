@@ -10,26 +10,31 @@ export default class Stack extends React.Component {
 
   render() {
     const { data, selected } = this.props;
+    console.log({
+      style: this.props.style
+    })
     return (
       <div style={{
           borderRadius: '25px',
           backgroundColor: Colors.activeGray,
           padding: '5px',
-          ...this.props.style
+          ...this.props.style,
+          float: 'left',
+          width: '100%'
         }}>
         {
           data && data.map((item) => (
             <span
               style={{
-                paddingRight: '50px',
-                paddingLeft: '50px',
+                width: '50%',
                 paddingTop: '15px',
                 paddingBottom: '15px',
                 float: 'left',
                 borderRadius: '25px',
                 backgroundColor: item == selected ? Colors.darkGray : Colors.activeGray,
                 color: item == selected ? Colors.white : Colors.darkGray,
-                fontWeight: 'bold'
+                fontWeight: 'bold',
+                textAlign: 'center'
               }}
               className="cursor-hover"
               onClick={() => {
