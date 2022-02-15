@@ -11,13 +11,17 @@ export default class SelectInput extends React.Component {
   }
   render(){
     return (
-      <select style={{...BasicStyles.formControl, backgroundColor: 'transparent', borderBottomColor: 'red'}}>
-      {
-          this.props.items.map(item => (
-            <option value={item}>{item}</option>
-          ))
-        }
-      </select>
+      <div style={{
+        borderBottom: '2px solid rgb(86, 102, 121)'
+      }}>
+        <select style={{...BasicStyles.formControl, backgroundColor: 'transparent'}}>
+        {
+            this.props.items.map(item => (
+              <option value={item}>{item}</option>
+            ))
+          }
+        </select>
+      </div>
     )
   }
 }
