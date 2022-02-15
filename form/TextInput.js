@@ -3,6 +3,7 @@ import {BasicStyles} from 'common'
 import Colors from 'common/Colors'
 import Validator from 'services/validator'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Form } from 'react-bootstrap';
 export default class TextInput extends React.Component {
   constructor(props) {
     super(props);
@@ -54,7 +55,6 @@ export default class TextInput extends React.Component {
               }}
               onKeyPress={event => (event.key === 'Enter' && this.props.enterEnable) && this.props.onEnter()}
               ></input>
-
             {
               this.props.iconRight && (
                 <span style={{
@@ -74,6 +74,15 @@ export default class TextInput extends React.Component {
                 </span>
               )
             }
+          </div>
+          <div className="select" style={{marginTop: '2%'}}>
+          {
+              this.props.checkBoxLabel !== undefined && this.props.checkBoxLabel.map(el => (
+                <div className="mb-3" >
+                  <Form.Check type='checkbox' label={el}/>
+                </div>
+              ))
+          }
           </div>
           {
             this.props.validation.error && (
