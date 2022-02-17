@@ -14,7 +14,8 @@ export default class SelectInput extends React.Component {
     return (
       <div>
         <div style={{
-          borderBottom: '2px solid rgb(86, 102, 121)'
+          borderBottom: '2px solid rgb(86, 102, 121)',
+          ...this.props.style
         }}>
           <select style={{...BasicStyles.formControl, backgroundColor: 'transparent'}}>
           {

@@ -70,7 +70,7 @@ export default class TextInput extends React.Component {
                   this.props.onClickRightIcon()
                 }}
                 >
-                  <FontAwesomeIcon icon={this.props.iconRight} size="lg"/>
+                  <FontAwesomeIcon icon={this.props.iconRight} color={this.props.iconStyle != null ? this.props.iconStyle : 'black'} size="lg"/>
                 </span>
               )
             }
