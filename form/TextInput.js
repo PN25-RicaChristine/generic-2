@@ -45,6 +45,7 @@ export default class TextInput extends React.Component {
               type={this.props.type}
               placeholder={this.props.placeholder}
               value={this.props.value}
+              disabled={this.props.disable ? this.props.disable : false}
               style={{
                 ...BasicStyles.formControl,
                 width: this.props.iconRight ? '90%' : '100%',
