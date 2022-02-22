@@ -48,7 +48,7 @@ export default class TextInput extends React.Component {
               disabled={this.props.disable ? this.props.disable : false}
               style={{
                 ...BasicStyles.formControl,
-                width: this.props.iconRight ? '90%' : '100%',
+                width: this.props.iconRight || this.props.rightLabel ? '90%' : '100%',
                 float: 'left'
               }}
               onChange={(e) => {
@@ -72,6 +72,21 @@ export default class TextInput extends React.Component {
                 }}
                 >
                   <FontAwesomeIcon icon={this.props.iconRight} color={this.props.iconStyle != null ? this.props.iconStyle : 'black'} size="lg"/>
+                </span>
+              )
+            }
+            {
+              this.props.rightLabel && (
+                <span style={{
+                  width: '10%',
+                  float: 'left',
+                  display: 'flex',
+                  justifyContent: 'right',
+                  alignItems: 'center',
+                  height: 50
+                }}
+                >
+                  {this.props.rightLabel}
                 </span>
               )
             }
