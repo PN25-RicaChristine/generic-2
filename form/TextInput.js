@@ -41,6 +41,26 @@ export default class TextInput extends React.Component {
               ...this.props.style
             }}
           >
+            {
+              this.props.iconLeft && (
+                <span style={{
+                  width: '10%',
+                  float: 'left',
+                  display: 'flex',
+                  justifyContent: 'left',
+                  alignItems: 'center',
+                  height: 50
+                }}
+                className="href-link"
+                onClick={() => {
+                  this.props.onClickRightIcon()
+                }}
+                >
+                  <FontAwesomeIcon icon={this.props.iconLeft} color={this.props.iconStyle != null ? this.props.iconStyle : 'black'} size="lg"/>
+                </span>
+              )
+            }
+
             <input
               type={this.props.type}
               placeholder={this.props.placeholder}
@@ -48,7 +68,7 @@ export default class TextInput extends React.Component {
               disabled={this.props.disable ? this.props.disable : false}
               style={{
                 ...BasicStyles.formControl,
-                width: this.props.iconRight || this.props.rightLabel ? '90%' : '100%',
+                width: this.props.iconRight || this.props.rightLabel || this.props.iconLeft ? '90%' : '100%',
                 float: 'left'
               }}
               onChange={(e) => {
