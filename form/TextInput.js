@@ -3,7 +3,6 @@ import {BasicStyles} from 'common'
 import Colors from 'common/Colors'
 import Validator from 'services/validator'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Form } from 'react-bootstrap';
 export default class TextInput extends React.Component {
   constructor(props) {
     super(props);
@@ -41,6 +40,26 @@ export default class TextInput extends React.Component {
               ...this.props.style
             }}
           >
+            {
+              this.props.iconLeft && (
+                <span style={{
+                  width: '10%',
+                  float: 'left',
+                  display: 'flex',
+                  justifyContent: 'left',
+                  alignItems: 'center',
+                  height: 50
+                }}
+                className="href-link"
+                onClick={() => {
+                  this.props.onClickRightIcon()
+                }}
+                >
+                  <FontAwesomeIcon icon={this.props.iconLeft} color={this.props.iconStyle != null ? this.props.iconStyle : 'black'} size="lg"/>
+                </span>
+              )
+            }
+
             <input
               type={this.props.type}
               placeholder={this.props.placeholder}
@@ -48,7 +67,7 @@ export default class TextInput extends React.Component {
               disabled={this.props.disable ? this.props.disable : false}
               style={{
                 ...BasicStyles.formControl,
-                width: this.props.iconRight ? '90%' : '100%',
+                width: this.props.iconRight || this.props.rightLabel || this.props.iconLeft ? '90%' : '100%',
                 float: 'left'
               }}
               onChange={(e) => {
@@ -75,15 +94,21 @@ export default class TextInput extends React.Component {
                 </span>
               )
             }
-          </div>
-          <div className="select" style={{marginTop: '2%'}}>
-          {
-              this.props.checkBoxLabel !== undefined && this.props.checkBoxLabel.map(el => (
-                <div className="mb-3" >
-                  <Form.Check type='checkbox' label={el}/>
-                </div>
-              ))
-          }
+            {
+              this.props.rightLabel && (
+                <span style={{
+                  width: '10%',
+                  float: 'left',
+                  display: 'flex',
+                  justifyContent: 'right',
+                  alignItems: 'center',
+                  height: 50
+                }}
+                >
+                  {this.props.rightLabel}
+                </span>
+              )
+            }
           </div>
           {
             this.props.validation.error && (
