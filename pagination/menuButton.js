@@ -31,7 +31,7 @@ export default class Stack extends React.Component {
                 paddingBottom: '15px',
                 float: 'left',
                 borderRadius: '25px',
-                backgroundColor: item == selected ? Colors.darkGray : Colors.activeGray,
+                backgroundColor: item == selected ? Colors.menuButton.backgroundColor : Colors.menuButton.activeColor,
                 color: item == selected ? Colors.white : Colors.darkGray,
                 fontWeight: 'bold',
                 textAlign: 'center'
