@@ -43,6 +43,7 @@ export default class Stack extends React.Component {
   }
 
   initialize = () => {
+    console.log('Facebook Authentication')
     let FB = window.FB
     FB.init({
       appId            : config.facebook.id,
