@@ -3,14 +3,46 @@ import {Helmet} from "react-helmet";
 import config from 'config'
 import { faFacebookF } from '@fortawesome/fontawesome-free-brands'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import SocialLogin from "react-social-login";
 export default class Stack extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  init = () => {
-    console.log('hello')
+  login(){
+    let FB = window.FB
+    FB.login(function(response) {
+      if (response.authResponse) {
+        console.log({
+          auth: response
+        })
+        FB.api('/me', function(user) {
+          console.log({
+            user
+          });
+        });
+      } else {
+        console.log('User cancelled login or did not fully authorize.');
+      }
+    });
+  }
+
+  statusChangeCallback = (response) => {
+    let FB = window.FB
+    if(response.status == 'connected'){
+      console.log({
+        auth: response
+      })
+      FB.api('/me', function(user) {
+        console.log({
+          user
+        });
+      });
+    }else{
+      this.login()
+    }
+  }
+
+  initialize = () => {
     let FB = window.FB
     FB.init({
       appId            : config.facebook.id,
@@ -19,23 +51,17 @@ export default class Stack extends React.Component {
       version          : 'v13.0'
     });
 
-    FB.login(function(response) {
-      if (response.authResponse) {
-        console.log('Welcome!  Fetching your information.... ');
-        FB.api('/me', function(response) {
-          console.log('Good to see you, ' + response.name + '.');
-        });
-      } else {
-        console.log('User cancelled login or did not fully authorize.');
-      }
+    FB.getLoginStatus(response => {   // Called after the JS SDK has been initialized.
+      this.statusChangeCallback(response);        // Returns the login status.
     });
+
   }
   
   render() {
     return (
         <div
           onClick={() => {
-            this.init()
+            this.initialize()
           }}
         >
           <FontAwesomeIcon
