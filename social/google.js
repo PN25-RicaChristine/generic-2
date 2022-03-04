@@ -14,7 +14,11 @@ export default class Stack extends React.Component {
         instance
     })
     if(instance.isSignedIn.get() == true){
-        console.log('already signed in')
+        instance.signIn().then(response => {
+            console.log({
+                response
+            })
+        })
     }else{
         instance.signIn().then(response => {
             console.log({
@@ -35,7 +39,7 @@ export default class Stack extends React.Component {
   initClient = (response) => {
       let gapi = window.gapi
       gapi.auth2.init({
-          'clientId': config.google.id + '.apps.googleusercontent.com',
+          'clientId': config.google.id,
           'scope': 'https://www.googleapis.com/auth/drive.metadata.readonly',
           'discoveryDocs': ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest']
       }).then(() => {
@@ -61,7 +65,7 @@ export default class Stack extends React.Component {
               />
 
           <Helmet>
-                <meta name="google-signin-client_id" content={config.google.id + ".apps.googleusercontent.com"} />
+                <meta name="google-signin-client_id" content={config.google.id} />
                 <script src="https://apis.google.com/js/platform.js" async defer></script>
           </Helmet>
         </div>
