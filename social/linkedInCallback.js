@@ -1,16 +1,23 @@
-import React from 'react';
+import React,  {useEffect, useState} from 'react';
 import {Helmet} from "react-helmet";
 import config from 'config'
 import { faLinkedinIn } from '@fortawesome/fontawesome-free-brands'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
-export default class Stack extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+import { withRouter, useLocation } from 'react-router-dom';
+function Stack() {
+    const { search } = useLocation()
+    const [ code, setCode ] = useState(null)
+    useEffect(() => {
+        if(code == null){
+            setCode(new URLSearchParams(search).get('code'))
+        }
+    })
 
   
-  render() {
+    console.log({
+        code
+    })
     return (
         <div
             onClick={() => {
@@ -19,5 +26,6 @@ export default class Stack extends React.Component {
         >
         </div>
     )
-  }
 }
+
+export default withRouter(Stack);
