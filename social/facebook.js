@@ -6,19 +6,40 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 export default class Stack extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      user: null
+    }
   }
 
   login(){
     let FB = window.FB
     FB.login(function(response) {
       if (response.authResponse) {
-        console.log({
-          auth: response
-        })
-        FB.api('/me', function(user) {
-          console.log({
-            user
-          });
+        FB.api('/me', {fields: 'last_name,first_name,email,picture,name,short_name'}, user => {
+          console.log(response)
+          this.setState({
+            user: {
+              username: user.email,
+              email: user.email,
+              information: {
+                first_name: user.first_name,
+                last_name: user.last_name
+              },
+              merchant: {
+                name: user.name
+              },
+              profile: user.profile ? {
+                url: user.picture.url
+              } : null,
+              token: {
+                ...response.authResponse,
+                token: response.authResponse.accessToken
+              }
+            }
+          })
+          setTimeout(() => {
+            console.log(this.state.user)
+          }, 1000)
         });
       } else {
         console.log('User cancelled login or did not fully authorize.');
@@ -29,14 +50,7 @@ export default class Stack extends React.Component {
   statusChangeCallback = (response) => {
     let FB = window.FB
     if(response.status == 'connected'){
-      console.log({
-        auth: response
-      })
-      FB.api('/me', function(user) {
-        console.log({
-          user
-        });
-      });
+      this.login()
     }else{
       this.login()
     }
