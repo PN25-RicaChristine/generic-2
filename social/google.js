@@ -14,7 +14,6 @@ export default class Stack extends React.Component {
 
   manageResult(response){
     if(response && response.Du){
-      console.log(response)
       this.setState({
         user: {
           email: response.Du.tv,
@@ -36,12 +35,12 @@ export default class Stack extends React.Component {
           })
         }
       })
+      setTimeout(() => {
+        console.log(this.state.user)
+      }, 1000)
     }
   }
   signIn(instance){
-    console.log({
-        instance
-    })
     if(instance.isSignedIn.get() == true){
         instance.signIn().then(response => {
             this.manageResult(response)

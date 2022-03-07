@@ -11,36 +11,40 @@ export default class Stack extends React.Component {
     }
   }
 
+  getUser(auth){
+    let FB = window.FB
+    FB.api('/me', {fields: 'last_name,first_name,email,picture,name,short_name'}, user => {
+      this.setState({
+        user: {
+          username: user.email,
+          email: user.email,
+          information: {
+            first_name: user.first_name,
+            last_name: user.last_name
+          },
+          merchant: {
+            name: user.name
+          },
+          profile: user.profile ? {
+            url: user.picture.url
+          } : null,
+          token: {
+            ...auth,
+            token: auth.accessToken
+          }
+        }
+      })
+      setTimeout(() => {
+        console.log(this.state.user)
+      }, 1000)
+    });
+  }
+
   login(){
     let FB = window.FB
-    FB.login(function(response) {
-      if (response.authResponse) {
-        FB.api('/me', {fields: 'last_name,first_name,email,picture,name,short_name'}, user => {
-          console.log(response)
-          this.setState({
-            user: {
-              username: user.email,
-              email: user.email,
-              information: {
-                first_name: user.first_name,
-                last_name: user.last_name
-              },
-              merchant: {
-                name: user.name
-              },
-              profile: user.profile ? {
-                url: user.picture.url
-              } : null,
-              token: {
-                ...response.authResponse,
-                token: response.authResponse.accessToken
-              }
-            }
-          })
-          setTimeout(() => {
-            console.log(this.state.user)
-          }, 1000)
-        });
+    FB.login( auth => {
+      if (auth.authResponse) {
+        this.getUser(auth.authResponse)
       } else {
         console.log('User cancelled login or did not fully authorize.');
       }
@@ -50,7 +54,8 @@ export default class Stack extends React.Component {
   statusChangeCallback = (response) => {
     let FB = window.FB
     if(response.status == 'connected'){
-      this.login()
+      // this.login()
+      this.getUser(response.authResponse)
     }else{
       this.login()
     }
