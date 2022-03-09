@@ -6,24 +6,48 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 export default class Stack extends React.Component {
   constructor(props) {
     super(props);
-    this.GoogleAuth = null
+    this.GoogleAuth = null;
+    this.state = {
+      user: null
+    }
   }
 
+  manageResult(response){
+    if(response && response.Du){
+      this.setState({
+        user: {
+          email: response.Du.tv,
+          username: response.Du.tv,
+          information: {
+            first_name: response.Du.VX,
+            last_name: response.Du.iW
+          },
+          merchant: {
+            name: response.Du.tf
+          },
+          profile: {
+            url: response.Du.eN
+          },
+          token: JSON.stringify({
+            ...response.wc,
+            token: response.wc.access_token,
+            id: response.Du.FW
+          })
+        }
+      })
+      setTimeout(() => {
+        console.log(this.state.user)
+      }, 1000)
+    }
+  }
   signIn(instance){
-    console.log({
-        instance
-    })
     if(instance.isSignedIn.get() == true){
         instance.signIn().then(response => {
-            console.log({
-                response
-            })
+            this.manageResult(response)
         })
     }else{
         instance.signIn().then(response => {
-            console.log({
-                response
-            })
+          this.manageResult(response)
         })
     }
   }
