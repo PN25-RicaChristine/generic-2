@@ -10,10 +10,14 @@ export default class SelectInput extends React.Component {
   }
   render(){
     return (
-      <div>
-        <div style={{
-          borderBottom: '2px solid rgb(86, 102, 121)',
+      <div
+        style={{
           ...this.props.style
+        }}
+        className={this.props.className ? this.props.className : null}
+      >
+        <div style={{
+          borderBottom: '2px solid ' + Colors.primary
         }}>
           <select
             style={{
