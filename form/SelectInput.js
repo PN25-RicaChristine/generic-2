@@ -18,7 +18,8 @@ export default class SelectInput extends React.Component {
           <select
             style={{
               ...BasicStyles.formControl,
-              backgroundColor: 'transparent'
+              backgroundColor: 'transparent',
+              ...this.props.selectStyle
             }}
             value={this.props.value}
             onChange={(e) => {

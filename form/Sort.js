@@ -26,7 +26,7 @@ export default class Sort extends React.Component {
         >
           {
             (options.length > 0) && options.map((item, index) => (
-              <option value={item.index}>{item.title}</option>
+              <option value={index}>{item.title}</option>
             ))
           }
         </Form.Select>
