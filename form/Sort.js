@@ -48,7 +48,7 @@ export default class Sort extends React.Component {
             float: 'left',
             margin: '0px',
             padding: '0px',
-            backgroundColor: Colors.black,
+            backgroundColor:  this.props.color ?  this.props.color : Colors.black,
             color: Colors.white,
             alignItems: 'center',
             justifyContent: 'center',
