@@ -7,17 +7,30 @@ import { Form } from 'react-bootstrap';
 export default class SelectInput extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-    }
   }
   render(){
     return (
-      <div>
-        <div style={{
-          borderBottom: '2px solid rgb(86, 102, 121)',
+      <div
+        style={{
           ...this.props.style
+        }}
+        className={this.props.className ? this.props.className : null}
+      >
+        <div style={{
+          borderBottom: '2px solid ' + Colors.primary
         }}>
-          <select style={{...BasicStyles.formControl, backgroundColor: 'transparent'}}>
+          <select
+            style={{
+              ...BasicStyles.formControl,
+              backgroundColor: 'transparent',
+              ...this.props.selectStyle
+            }}
+            value={this.props.value}
+            onChange={(e) => {
+              this.props.onChange(e.target.value)
+            }}
+            
+            >
           {
               this.props.items.map(item => (
                 <option value={item}>{item}</option>

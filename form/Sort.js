@@ -5,6 +5,9 @@ import { Form } from 'react-bootstrap'
 export default class Sort extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      search: null
+    }
   }
 
   renderDropdown(){
@@ -16,10 +19,14 @@ export default class Sort extends React.Component {
           width: '100%',
           border: 'none',
           borderRight: 'solid 1px ' + Colors.gray
-        }}>
+        }}
+        onChange={(e) => {
+          this.props.onMenuChange(options[parseInt(e.target.value)])
+        }}
+        >
           {
-            (options.length > 0) && options.map((item) => (
-              <option>{item.title}</option>
+            (options.length > 0) && options.map((item, index) => (
+              <option value={index}>{item.title}</option>
             ))
           }
         </Form.Select>
@@ -27,6 +34,11 @@ export default class Sort extends React.Component {
     )
   }
 
+  validation = (e) => {
+    this.setState({
+      search: e.target.value
+    })
+  }
 
   render() {
     const { options } = this.props;
@@ -84,6 +96,11 @@ export default class Sort extends React.Component {
               borderTopRightRadius: '25px',
               borderBottomRightRadius: '25px',
             }}
+            value={this.state.search}
+            onChange={(e) => {
+              this.validation(e)
+            }}
+            onKeyPress={event => (event.key === 'Enter') && this.props.onEnter(this.state.search)}
             />
         </div>
     )
