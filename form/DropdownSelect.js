@@ -8,12 +8,22 @@ import Button from 'components/increment/generic/form/Button'
 export default class SelectInput extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+        input: null,
+        selected: null
+    }
   }
+
+  componentDidMount(){
+      const { selected } = this.props;
+      this.setState({
+          selected: selected
+      })
+  }
+  
   render(){
-    const { data, btn, selected } = this.props; 
-    console.log({
-        data
-    })
+    const { data, btn } = this.props;
+    const { selected } = this.state;
     return (
     <div style={{
         ...this.props.style,
@@ -32,16 +42,27 @@ export default class SelectInput extends React.Component {
                 paddingLeft: 20,
                 borderRight: 'none',
                 float: 'left',
-                width: '80%'
+                width: '70%'
             }}
             value={selected ? selected.name : 'Select'}
             onChange={(e) => {
-                this.props.onChange(e.target.value)
+                this.setState({
+                    input: parseInt(e.target.value)
+                })
+                for (let index = 0; index < data.length; index++) {
+                    const element = data[index];
+                    if(element.name == e.target.value){
+                        this.setState({
+                            selected: element
+                        })
+                        break
+                    }
+                }
             }}
         >
         {
             data.map((item, index) => (
-                <option value={index}>{item.name}</option>
+                <option value={item.name}>{item.name}</option>
             ))
         }
         </select>
@@ -49,7 +70,7 @@ export default class SelectInput extends React.Component {
         <Button
             title={btn.label}
             onClick={() => {
-
+                this.props.onChange(selected)
             }}
             style={{
                 float: 'left',
