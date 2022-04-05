@@ -108,7 +108,7 @@ export default class SortEnhance extends React.Component {
             onChange={(e) => {
               this.validation(e)
             }}
-            onKeyPress={event => (event.key === 'Enter') && this.props.onEnter(this.state.search)}
+            onKeyPress={event => (event.key === 'Enter') && this.props.onEnter(this.state.search !== null ? `%${this.state.search}%` : '%%')}
             />
         </div>
     )
