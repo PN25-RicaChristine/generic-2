@@ -60,7 +60,6 @@ class Stack extends React.Component {
                 <div
                   style={
                     {
-                      color: Colors.primary,
                       padding: '10px 0px 10px 0px',
                       wordBreak: 'break-all',
                       width: '100% !important',
@@ -68,7 +67,7 @@ class Stack extends React.Component {
                   }
                 >
                   <h3 style={{
-                    color: Colors.primary,
+                    color: '#34475D',
                     fontWeight: 'bold',
                     marginTop: 10,
                   }}>{el.title}</h3>
@@ -76,7 +75,7 @@ class Stack extends React.Component {
                     color: Colors.rgbaGray
                   }}>{el.position}</p>
                   <p style={{
-                    color: Colors.primary,
+                    color: '#34475D',
                     fontWeight: 'bold',
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
