@@ -45,7 +45,7 @@ export default class SelectInput extends React.Component {
                         this.setState({
                             selected: element
                         })
-                        this.props.onChange(selected)
+                        this.props.onChange(element)
                         break
                     }
                     
