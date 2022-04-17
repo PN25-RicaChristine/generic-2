@@ -1,7 +1,7 @@
 import React from 'react';
 import {BasicStyles} from 'common'
 import Colors from 'common/Colors'
-import Validator from 'services/validator'
+import Validator from './validator'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 export default class TextInput extends React.Component {
   constructor(props) {
