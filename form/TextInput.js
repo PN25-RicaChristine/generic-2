@@ -37,7 +37,8 @@ export default class TextInput extends React.Component {
           <div
             style={{
               ...BasicStyles.formControlContainer,
-              ...this.props.style
+              ...this.props.style,
+              borderBottom: '2px solid rgb(104, 104, 104)'
             }}
           >
             {
