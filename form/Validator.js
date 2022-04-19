@@ -16,7 +16,7 @@ export default{
 			case 'phone_number': {
 					if(value == null || value == '') return column + ' is required.'
 					if(value.length < 8) return column + ' requires atleast ' + setting.size + ' digits.'
-					if(!isNum(value)) return column + ' is invalid'
+					if(isNaN(value)) return column + ' is invalid'
 					return true
 				}
 				break
