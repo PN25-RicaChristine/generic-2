@@ -280,7 +280,7 @@ class Stack extends React.Component {
         <Grid container columns={4}>
           <Grid item xs={3}>
             <h3 style={{
-              color: Colors.primary,
+              color: '#34475D',
               fontWeight: 'bold'
             }}>{activeMessage.name}</h3>
             <p style={{

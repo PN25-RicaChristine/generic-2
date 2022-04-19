@@ -79,7 +79,6 @@ class Stack extends React.Component {
                 <div
                   style={
                     {
-                      color: Colors.primary,
                       padding: '10px 0px 10px 0px',
                       wordBreak: 'break-all',
                       width: '100% !important',
@@ -87,7 +86,7 @@ class Stack extends React.Component {
                   }
                 >
                   <h3 style={{
-                    color: Colors.primary,
+                    color: '#34475D',
                     fontWeight: 'bold'
                   }}>{el.title}</h3>
                   <h3 dangerouslySetInnerHTML={{ __html: this.convertLineToBreak(el.message) }}></h3>
