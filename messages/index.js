@@ -18,6 +18,7 @@ import Config from 'config.js';
 import API from 'services/api'
 import Routes from 'common/Routes'
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
+import _ from 'lodash'
 class Stack extends React.Component {
   constructor(props) {
     super(props);
@@ -30,23 +31,27 @@ class Stack extends React.Component {
       selected: 'Agent',
       isLoading: false,
       isLoading1: false,
-      activeMessage: null
+      activeMessage: null,
+      limit: 4,
+      offset: 0,
+      limit1: 5,
+      offset1: 0
     }
   }
 
   componentDidMount() {
-    this.retrieveMessengerGroup()
+    this.retrieveMessengerGroup(false)
   }
 
-  retrieveMessages = (item) => {
+  retrieveMessages = (item, flag) => {
+    const { limit1, offset1, messages } = this.state;
     this.setState({
       isLoading1: true,
       activeMessage: {
         name: item.title,
         position: 'Sales manager, realtor',
         id: item.id
-      },
-      messages: []
+      }
     })
     let parameter = {
       condition: [{
@@ -54,8 +59,8 @@ class Stack extends React.Component {
         column: 'messenger_group_id',
         clause: '='
       }],
-      limit: 20,
-      offset: 0
+      limit: limit1,
+      offset: flag === true && offset1 > 0 ? offset1 * limit1 : offset1
     }
     API.request(Routes.messagesRetrieve, parameter, response => {
       this.setState({ isLoading1: false })
@@ -68,24 +73,33 @@ class Stack extends React.Component {
             read: false
           }
         })
-        this.setState({ messages: temp })
+        this.setState({
+          messages: flag === false ? temp : _.uniqBy([...messages, ...temp], 'id'),
+          offset1: flag === false ? 0 : offset1 + 1
+        })
+      } else {
+        this.setState({
+          messages: flag === false ? [] : messages,
+          offset1: flag === false ? 0 : offset1
+        })
       }
     }, error => {
       this.setState({ isLoading1: false })
     })
   }
 
-  retrieveMessengerGroup = () => {
+  retrieveMessengerGroup = (flag) => {
     const { user } = this.props.state;
+    const { limit, offset, messengerGroup } = this.state;
     if (user === null) return
     let parameter = {
       condition: [{
-        value: user.id,
+        value: 8,
         column: 'account_id',
         clause: '='
       }],
-      limit: 5,
-      offset: 0
+      limit: limit,
+      offset: flag === true && offset > 0 ? offset * limit : offset
     }
     this.setState({ isLoading: true })
     API.request(Routes.messengerGroupRetrieve, parameter, response => {
@@ -99,7 +113,15 @@ class Stack extends React.Component {
             read: false
           }
         })
-        this.setState({ messengerGroup: temp })
+        this.setState({
+          messengerGroup: flag === false ? temp : _.uniqBy([...messengerGroup, ...temp], 'id'),
+          offset: flag === false ? 1 : offset + 1
+        })
+      } else {
+        this.setState({
+          messengerGroup: flag === false ? [] : messengerGroup,
+          offset: flag === false ? 0 : offset
+        })
       }
     }, error => {
       this.setState({ isLoading: false })
@@ -319,7 +341,7 @@ class Stack extends React.Component {
   }
 
   render() {
-    const { messengerGroup, messages, activeMessage, isLoading1, isLoading } = this.state;
+    const { messengerGroup, messages, activeMessage, isLoading1, isLoading, limit1, offset1 } = this.state;
     return (
       <div style={Style.mainContainer}>
         <BreadCrumbs
@@ -351,7 +373,17 @@ class Stack extends React.Component {
               <People
                 isLoading={isLoading}
                 messengerGroup={messengerGroup}
-                retrieveMessages={(item) => { this.retrieveMessages(item) }}
+                retrieveMessengerGroup={() => {
+                  this.retrieveMessengerGroup(true)
+                }}
+                retrieveMessages={(item) => {
+                  this.setState({
+                    limit1: 5,
+                    offset1: 0
+                  }, () => {
+                    this.retrieveMessages(item, true)
+                  })
+                }}
               />
             </Grid>
             <Grid item xs={7} style={{
@@ -368,7 +400,17 @@ class Stack extends React.Component {
                 <div style={{
                   padding: '0px 0px 0px 25px',
                 }}>
-                {messages.length > 0 && <Message messengerGroup={messages} />}
+                {messages.length > 0 &&
+                <Message
+                  messengerGroup={messages}
+                  retrieveMessages={() => {
+                    this.retrieveMessages({
+                      title: activeMessage.name,
+                      position: 'Sales manager, realtor',
+                      id: activeMessage.id
+                    }, true)
+                  }}
+                />}
                 </div>
               </div>
               {activeMessage !== null && this.footer()}

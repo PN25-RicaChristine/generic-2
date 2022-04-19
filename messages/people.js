@@ -13,6 +13,23 @@ class Stack extends React.Component {
     }
   }
 
+  componentDidMount() {
+    document.getElementsByClassName('people-container')[0].addEventListener('scroll', (event) => {
+      var element = event.target;
+      if (element.scrollHeight - element.scrollTop === element.clientHeight){
+        this.retrieve()
+      }
+    })
+  }
+
+  retrieve = () => {
+    this.props.retrieveMessengerGroup()
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('scroll', this.trackScrolling);
+  }
+
   render() {
     const { messengerGroup, isLoading } = this.props
     const { user } = this.props.state
@@ -23,6 +40,7 @@ class Stack extends React.Component {
           height: '56vh',
           padding: '0px 25px 25px 25px'
         }}
+        className={'people-container'}
       >
         {isLoading && [1,2,3,4].map(item => (<Skeleton height={150} style={{ marginBottom: 20, borderRadius: 5 }} />))}
         {messengerGroup.length === 0 && !isLoading && <p>You have no messages as of the moment.</p>}
@@ -31,11 +49,12 @@ class Stack extends React.Component {
             return (
               <div
                 key={'msg' + ndx}
+                id={'msg' + ndx}
                 style={
                   {
                     width: '100% !important',
                     marginTop: '10px',
-                    marginBottom: '10px',
+                    marginBottom: ndx + 1 === messengerGroup.length ? '60px' : '10px',
                     display: 'flex',
                     justifyContent: 'flex-start',
                     position: 'relative',

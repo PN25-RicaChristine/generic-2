@@ -16,6 +16,23 @@ class Stack extends React.Component {
     return text.replace(/\n/g, '<br />')
   }
 
+  componentDidMount() {
+    document.getElementsByClassName('message-container')[0].addEventListener('scroll', (event) => {
+      var element = event.target
+      if (parseInt(element.scrollHeight + element.scrollTop) === element.clientHeight){
+        this.retrieve()
+      }
+    })
+  }
+
+  retrieve = () => {
+    this.props.retrieveMessages()
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('scroll', this.trackScrolling);
+  }
+
   render() {
     const { messengerGroup } = this.props
     const { user } = this.props.state
@@ -28,6 +45,7 @@ class Stack extends React.Component {
           height: '46vh',
           paddingRight: 25
         }}
+        className={'message-container'}
       >
         {
           messengerGroup.length > 0 && messengerGroup.map((el, ndx) => {
