@@ -1,7 +1,7 @@
 import React from 'react';
 import {BasicStyles} from 'common'
 import Colors from 'common/Colors'
-import Validator from 'services/validator'
+import Validator from './Validator.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 export default class TextInput extends React.Component {
   constructor(props) {
@@ -48,7 +48,6 @@ export default class TextInput extends React.Component {
               style={{
                 ...BasicStyles.formControl,
                 ...this.props.style,
-                width: '100%',
                 float: 'left'
               }}
               rows={this.props.rows}
