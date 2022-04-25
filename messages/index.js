@@ -19,6 +19,9 @@ import API from 'services/api'
 import Routes from 'common/Routes'
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 import _ from 'lodash'
+import Footer from './footer';
+import Header from './header';
+
 class Stack extends React.Component {
   constructor(props) {
     super(props);
@@ -26,139 +29,11 @@ class Stack extends React.Component {
       text: null,
       search: null,
       error: null,
-      messengerGroup: [],
-      messages: [],
       selected: 'Agent',
-      isLoading: false,
-      isLoading1: false,
       activeMessage: null,
-      limit: 4,
-      offset: 0,
-      limit1: 5,
-      offset1: 0
+      messages: [],
+      updateMessage: []
     }
-  }
-
-  componentDidMount() {
-    this.retrieveMessengerGroup(false)
-  }
-
-  retrieveMessages = (item, flag) => {
-    const { limit1, offset1, messages } = this.state;
-    this.setState({
-      isLoading1: true,
-      activeMessage: {
-        name: item.title,
-        position: 'Sales manager, realtor',
-        id: item.id
-      }
-    })
-    let parameter = {
-      condition: [{
-        value: item.id,
-        column: 'messenger_group_id',
-        clause: '='
-      }],
-      limit: limit1,
-      offset: flag === true && offset1 > 0 ? offset1 * limit1 : offset1
-    }
-    API.request(Routes.messagesRetrieve, parameter, response => {
-      this.setState({ isLoading1: false })
-      if (response.data.length > 0) {
-        let temp = response.data.reverse().map(item => {
-          return {
-            ...item,
-            title: item.account.information ? item.account.information.first_name + ' ' + item.account.information.last_name : item.account.username,
-            position: 'Sales manager, realtor',
-            read: false
-          }
-        })
-        this.setState({
-          messages: flag === false ? temp : _.uniqBy([...messages, ...temp], 'id'),
-          offset1: flag === false ? 0 : offset1 + 1
-        })
-      } else {
-        this.setState({
-          messages: flag === false ? [] : messages,
-          offset1: flag === false ? 0 : offset1
-        })
-      }
-    }, error => {
-      this.setState({ isLoading1: false })
-    })
-  }
-
-  retrieveMessengerGroup = (flag) => {
-    const { user } = this.props.state;
-    const { limit, offset, messengerGroup } = this.state;
-    if (user === null) return
-    let parameter = {
-      condition: [{
-        value: 8,
-        column: 'account_id',
-        clause: '='
-      }],
-      limit: limit,
-      offset: flag === true && offset > 0 ? offset * limit : offset
-    }
-    this.setState({ isLoading: true })
-    API.request(Routes.messengerGroupRetrieve, parameter, response => {
-      this.setState({ isLoading: false })
-      if (response.data.length > 0) {
-        let temp = response.data.map(item => {
-          return {
-            ...item,
-            position: 'Sales manager, realtor',
-            messages: 'Last message here',
-            read: false
-          }
-        })
-        this.setState({
-          messengerGroup: flag === false ? temp : _.uniqBy([...messengerGroup, ...temp], 'id'),
-          offset: flag === false ? 1 : offset + 1
-        })
-      } else {
-        this.setState({
-          messengerGroup: flag === false ? [] : messengerGroup,
-          offset: flag === false ? 0 : offset
-        })
-      }
-    }, error => {
-      this.setState({ isLoading: false })
-    })
-  }
-
-  sendMessage = () => {
-    const { user } = this.props.state;
-    if (user === null) return
-    const { text, activeMessage, messages } = this.state;
-    let parameter = {
-      messenger_group_id: activeMessage.id,
-      account_id: user.id,
-      payload: 'text',
-      message: text
-    }
-    this.setState({ isLoading1: true })
-    API.request(Routes.messagesCreate, parameter, response => {
-      this.setState({ isLoading1: false })
-      if (response.data.length > 0) {
-        let temp = messages
-        temp.push({
-          id: response.data,
-          message: text,
-          title: user.information ? user.information.first_name + ' ' + user.information.last_name : user.username,
-          position: 'Sales manager, realtor',
-          read: false,
-          created_at: new Date()
-        })
-        this.setState({
-          messages: temp,
-          text: null
-        })
-      }
-    }, error => {
-      this.setState({ isLoading1: false })
-    })
   }
 
   menu = () => {
@@ -191,118 +66,6 @@ class Stack extends React.Component {
     )
   }
 
-  footer = () => {
-    const { text } = this.state;
-    return (
-      <div style={{
-        padding: 20,
-        height: '13vh',
-        borderTop: 'solid 1px ' + Colors.activeGray,
-        display: 'flex'
-      }}>
-        <Grid container columns={7}>
-          <Grid item xs={1} style={{
-            justifyContent: 'center',
-            display: 'flex'
-          }}>
-            <Button style={{
-              color: Colors.primary,
-            }}>
-              <SvgIcon component={AttachFile}
-                style={{
-                  fontSize: BasicStyles.iconSize
-                }}
-              />
-            </Button>
-            <Button style={{
-              color: Colors.primary,
-            }}>
-              <SvgIcon component={SentimentSatisfiedAltRounded}
-                style={{
-                  fontSize: BasicStyles.iconSize
-                }}
-              />
-            </Button>
-          </Grid>
-          <Grid item xs={4} style={{
-            justifyContent: 'center'
-          }}>
-            <TextInput
-              placeholder={'Enter your message'}
-              type={"text"}
-              value={text}
-              onChange={(text, error) => {
-                this.setState({
-                  text, error
-                })
-              }}
-              validation={{
-                type: 'text_without_space',
-                size: 1,
-                column: 'Enter your message',
-                error: this.state.error
-              }}
-            />
-          </Grid>
-          <Grid container xs={2} style={{
-            justifyContent: 'center'
-          }}>
-            <Button style={{
-              borderRadius: 20,
-              paddingLeft: '40px',
-              paddingRight: '40px',
-              color: Colors.primary,
-              border: 'solid 1px ' + Colors.primary
-            }}
-            onClick={() => {
-              this.sendMessage()
-            }}>
-              <SvgIcon component={SendRounded}
-                style={{
-                  fontSize: BasicStyles.iconSize,
-                  margin: 10
-                }}
-              />Send</Button>
-          </Grid>
-        </Grid>
-      </div>
-    )
-  }
-
-  header = () => {
-    const { activeMessage } = this.state;
-    return (
-      <div style={{
-        padding: 20,
-        borderBottom: 'solid 1px ' + Colors.activeGray,
-        height: '11vh'
-      }}>
-        <Grid container columns={4}>
-          <Grid item xs={3}>
-            <h3 style={{
-              color: '#34475D',
-              fontWeight: 'bold'
-            }}>{activeMessage.name}</h3>
-            <p style={{
-              color: Colors.rgbaGray,
-              margin: '5px 5px 0px 0px',
-            }}>{activeMessage.position}</p>
-          </Grid>
-          <Grid item xs={1}>
-            <p style={{
-              color: Colors.rgbaGray,
-              margin: '5px 5px 0px 0px',
-            }}>&nbsp;</p>
-            <h3 style={{
-              color: Colors.primary,
-              fontWeight: 'bold',
-              float: 'right',
-            }}>View Contract</h3>
-          </Grid>
-        </Grid>
-      </div>
-    )
-  }
 
   searchRight = () => {
     const { search } = this.state;
@@ -341,7 +104,7 @@ class Stack extends React.Component {
   }
 
   render() {
-    const { messengerGroup, messages, activeMessage, isLoading1, isLoading, limit1, offset1 } = this.state;
+    const { activeMessage, messages, updateMessage } = this.state;
     return (
       <div style={Style.mainContainer}>
         <BreadCrumbs
@@ -361,61 +124,52 @@ class Stack extends React.Component {
           marginTop: 20,
           border: 'solid 1px ' + Colors.activeGray,
           borderRadius: 25,
+          display: 'flex'
         }}>
-          <Grid container columns={10}>
-            <Grid item xs={3} style={{
-              border: 'solid 1px ' + Colors.activeGray,
-              height: '70vh',
-              borderTopLeftRadius: 24,
-              borderBottomLeftRadius: 25,
-            }}>
-              {this.searchRight()}
-              <People
-                isLoading={isLoading}
-                messengerGroup={messengerGroup}
-                retrieveMessengerGroup={() => {
-                  this.retrieveMessengerGroup(true)
-                }}
-                retrieveMessages={(item) => {
-                  this.setState({
-                    limit1: 5,
-                    offset1: 0
-                  }, () => {
-                    this.retrieveMessages(item, true)
-                  })
-                }}
-              />
-            </Grid>
-            <Grid item xs={7} style={{
+          {<div className={activeMessage ? 'container-40-full-mobile-hide' : 'container-100'} style={{
+            height: '70vh',
+            borderTopLeftRadius: 24,
+            borderBottomLeftRadius: 25
+          }}>
+            {this.searchRight()}
+            <People
+              setActiveMessage={(item) => {
+                this.setState({
+                  activeMessage: {
+                    name: item.title,
+                    position: 'Sales manager, realtor',
+                    id: item.id
+                  }
+                })
+              }}
+            />
+          </div>}
+          {
+            activeMessage &&
+            <div className='container-70-full-mobile' style={{
               border: 'solid 1px ' + Colors.activeGray,
               height: '70vh',
               borderTopRightRadius: 24,
               borderBottomRightRadius: 25
             }}>
-              {activeMessage !== null && this.header()}
-              <div style={{
-                height: '46vh'
-              }}>
-                {isLoading1 && <Skeleton height={20} style={{borderRadius: 5 }} />}
-                <div style={{
-                  padding: '0px 0px 0px 25px',
-                }}>
-                {messages.length > 0 &&
-                <Message
-                  messengerGroup={messages}
-                  retrieveMessages={() => {
-                    this.retrieveMessages({
-                      title: activeMessage.name,
-                      position: 'Sales manager, realtor',
-                      id: activeMessage.id
-                    }, true)
-                  }}
-                />}
-                </div>
-              </div>
-              {activeMessage !== null && this.footer()}
-            </Grid>
-          </Grid>
+              <Header activeMessage={activeMessage} />
+              <Message
+                activeMessage={activeMessage}
+                setMessages={(messages) => {
+                  this.setState({messages: messages})
+                }}
+                updatedMessage={updateMessage}
+                clearUpdate={() => {
+                  this.setState({updateMessage: []})
+                }}
+              />
+              <Footer
+                activeMessage={activeMessage}
+                messages={messages}
+                updateMessage={(message) => {this.setState({updatedMessage: message})}}
+              />
+            </div>
+          }
         </div>
       </div>
     )
