@@ -6,8 +6,14 @@ export default class SortEnhance extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      search: null
+      search: null,
+      inputType: null
     }
+  }
+
+  componentDidMount(){
+    const { options } = this.props;
+    this.setState({inputType: options[0].type})
   }
 
   handleDropDownChange(e){
@@ -15,6 +21,7 @@ export default class SortEnhance extends React.Component {
     let obj={}
     let selected = options[parseInt(e.target.value)]
     obj[selected.value] = selected.order
+    this.setState({inputType: selected.type})
     this.props.onMenuChange(obj)
   }
 
@@ -105,6 +112,7 @@ export default class SortEnhance extends React.Component {
               borderBottomRightRadius: '25px',
             }}
             value={this.state.search}
+            type={this.state.inputType}
             onChange={(e) => {
               this.validation(e)
             }}
