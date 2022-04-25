@@ -6,13 +6,15 @@ import API from 'services/api'
 import Routes from 'common/Routes'
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 import _ from 'lodash'
+import Config from 'common/Config';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 class Stack extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: false,
-      limit: 6,
+      limit: 100,
       offset: 0,
       data: []
     }
@@ -133,14 +135,23 @@ class Stack extends React.Component {
                     alignItems: 'center',
                     display: 'flex'
                   }}>
-                    <img src={'http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcSB19r_xX2ACRwem_jkPognrSavE_KPOVBiujil8oP12bDgSNr1uxvi_kfVL1s-'}
+                    {el.account.profile ? <img
+                      src={Config.BACKEND_URL + el.account.profile}
                       style={{
                         width: 50,
                         height: 50,
                         borderRadius: 25,
                         marginRight: 20,
                         border: '1px solid #E62D7E'
-                      }} />
+                      }} /> : <AccountCircleIcon
+                        style={{
+                          width: 50,
+                          height: 50,
+                          borderRadius: 25,
+                          marginRight: 20,
+                          border: '1px solid #E62D7E'
+                        }}
+                      />}
                   </div>
                   <div
                     style={
@@ -156,7 +167,17 @@ class Stack extends React.Component {
                       color: Colors.primary,
                       fontWeight: 'bold'
                     }}>{el.title}</h3>
-                    <h3 dangerouslySetInnerHTML={{ __html: this.convertLineToBreak(el.message) }}></h3>
+                    {el.payload === 'text' && <h3 dangerouslySetInnerHTML={{ __html: this.convertLineToBreak(el.message) }}></h3>}
+                    {el.payload === 'image' &&
+                      (el.files?.length > 0 && el.files.map((item, index) => (<img
+                        src={Config.BACKEND_URL + item.url}
+                        style={{
+                          width: 300,
+                          height: 200
+                        }}
+                        key={index}
+                      />)))
+                    }
                     <p style={{
                       color: Colors.rgbaGray,
                       position: 'absolute',

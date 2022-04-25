@@ -6,6 +6,8 @@ import API from 'services/api'
 import Routes from 'common/Routes'
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 import _ from 'lodash'
+import Config from 'config';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 class Stack extends React.Component {
   constructor(props) {
@@ -22,7 +24,7 @@ class Stack extends React.Component {
     this.retrieveMessengerGroup(false)
     document.getElementsByClassName('people-container')[0].addEventListener('scroll', (event) => {
       var element = event.target;
-      if (element.scrollHeight - element.scrollTop === element.clientHeight){
+      if (element.scrollHeight - element.scrollTop === element.clientHeight) {
         this.retrieve()
       }
     })
@@ -84,7 +86,7 @@ class Stack extends React.Component {
         }}
         className={'people-container'}
       >
-        {isLoading && [1,2,3,4].map(item => (<Skeleton height={150} style={{ marginBottom: 20, borderRadius: 5 }} />))}
+        {isLoading && [1, 2, 3, 4].map(item => (<Skeleton height={150} style={{ marginBottom: 20, borderRadius: 5 }} />))}
         {data.length === 0 && !isLoading && <p>You have no messages as of the moment.</p>}
         {
           data.length > 0 && data.map((el, ndx) => {
@@ -106,17 +108,26 @@ class Stack extends React.Component {
                     cursor: 'pointer'
                   }
                 }
-                onClick={() => {this.props.setActiveMessage(el)}}
+                onClick={() => { this.props.setActiveMessage(el) }}
               >
                 <div>
-                  <img src={'http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcSB19r_xX2ACRwem_jkPognrSavE_KPOVBiujil8oP12bDgSNr1uxvi_kfVL1s-'}
+                  {el.account.profile ? <img
+                    src={Config.BACKEND_URL + el.account.profile}
                     style={{
                       width: 50,
                       height: 50,
                       borderRadius: 25,
                       marginRight: 20,
                       border: '1px solid #E62D7E'
-                    }} />
+                    }} /> : <AccountCircleIcon
+                    style={{
+                      width: 50,
+                      height: 50,
+                      borderRadius: 25,
+                      marginRight: 20,
+                      border: '1px solid #E62D7E'
+                    }}
+                  />}
                 </div>
                 <div
                   style={

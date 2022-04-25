@@ -13,6 +13,7 @@ import Routes from 'common/Routes'
 import _ from 'lodash'
 import Picker from 'emoji-picker-react';
 import { FilePicker } from 'react-file-picker'
+import CONFIG from 'config';
 
 class Stack extends React.Component {
   constructor(props) {
@@ -33,8 +34,44 @@ class Stack extends React.Component {
     formData.append('account_id', user.id)
     formData.append('category', 'from-message')
     this.setState({isLoading: true})
-    API.upload(CONFIG.API_URL + '/files/upload_file', formData, response => {
+    API.upload('files/upload_file', formData, response => {
       this.setState({isLoading: false})
+      if(response.data) {
+        this.saveToMessages(response.data)
+      }
+    }, error => {
+      this.setState({isLoading: false})
+    })
+  }
+
+  saveToMessages = (image) => {
+    const { user } = this.props.state;
+    const { activeMessage, messages } = this.props;
+    let parameter = {
+      url: image.data,
+      account_id: user.id,
+      messenger_group_id: activeMessage.id,
+      payload: 'image',
+      payload_value: null,
+      message: null,
+      status: 0,
+      code: messages.length + 1
+    }
+    this.setState({isLoading: true})
+    API.request(Routes.createImageWithoutPayload, parameter, response => {
+      this.setState({isLoading: false})
+      if(response.data) {
+        let temp = messages
+        temp.push({
+          id: response.data.id,
+          message: null,
+          title: user.information ? user.information.first_name + ' ' + user.information.last_name : user.username,
+          position: 'Sales manager, realtor',
+          read: false,
+          created_at: new Date()
+        })
+        this.props.updateMessage(temp)
+      }
     }, error => {
       this.setState({isLoading: false})
     })
