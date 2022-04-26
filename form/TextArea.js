@@ -48,7 +48,6 @@ export default class TextInput extends React.Component {
               style={{
                 ...BasicStyles.formControl,
                 ...this.props.style,
-                width: '100%',
                 float: 'left'
               }}
               rows={this.props.rows}

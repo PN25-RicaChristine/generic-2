@@ -13,6 +13,13 @@ export default{
 					return true
 				}
 				break
+			case 'phone_number': {
+					if(value == null || value == '') return column + ' is required.'
+					if(value.length < 8) return column + ' requires atleast ' + setting.size + ' digits.'
+					if(isNaN(value)) return column + ' is invalid'
+					return true
+				}
+				break
 			case 'text_without_space': {
 					if(value == null || value == '') return column + ' is required.'
 					if(value.length < setting.size) return column + ' requires atleast ' + setting.size + ' characters.'

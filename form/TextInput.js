@@ -68,7 +68,7 @@ export default class TextInput extends React.Component {
               disabled={this.props.disable ? this.props.disable : false}
               style={{
                 ...BasicStyles.formControl,
-                width: this.props.iconRight || this.props.rightLabel || this.props.iconLeft ? '90%' : '100%',
+                width: this.props.iconRight || this.props.rightLabel || this.props.iconLeft ? '90%' : BasicStyles.formControl.width,
                 float: 'left'
               }}
               onChange={(e) => {
