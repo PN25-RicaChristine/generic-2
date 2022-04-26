@@ -50,7 +50,7 @@ const StripeComponent = (props) => {
       email: user.email,
       name: user.information.first_name + ' ' + user.information.last_name,
       status: 'authorized',
-      next_route: '/verification',
+      next_route: '/setup/verification',
       method: 'visa'
     }
     API.request(Routes.stripeCreate, parameter, response => {
