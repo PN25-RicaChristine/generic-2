@@ -112,7 +112,9 @@ class Stack extends React.Component {
           flexDirection: 'column-reverse',
           padding: '0px 25px 0px 25px',
           overflowY: 'scroll',
-          height: '46vh'
+          height: '46vh',
+          borderTopLeftRadius: 24,
+          borderBottomLeftRadius: 25
         }}
         className={'message-container'}>
           {
@@ -172,16 +174,16 @@ class Stack extends React.Component {
                       (el.files?.length > 0 && el.files.map((item, index) => (<img
                         src={Config.BACKEND_URL + item.url}
                         style={{
-                          width: 300,
                           height: 200
                         }}
+                        className='container-70-full-mobile'
                         key={index}
                       />)))
                     }
                     <p style={{
                       color: Colors.rgbaGray,
                       position: 'absolute',
-                      top: 10,
+                      top: -10,
                       right: 0
                     }}>{el.created_at}</p>
                   </div>

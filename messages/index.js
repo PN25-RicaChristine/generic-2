@@ -147,12 +147,12 @@ class Stack extends React.Component {
           {
             activeMessage &&
             <div className='container-70-full-mobile' style={{
-              border: 'solid 1px ' + Colors.activeGray,
+              // border: 'solid 1px ' + Colors.activeGray,
               height: '70vh',
               borderTopRightRadius: 24,
               borderBottomRightRadius: 25
             }}>
-              <Header activeMessage={activeMessage} />
+              <Header activeMessage={activeMessage} removeActiveMessage={() => {this.setState({activeMessage: null})}}/>
               <Message
                 activeMessage={activeMessage}
                 setMessages={(messages) => {
