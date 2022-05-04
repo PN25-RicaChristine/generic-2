@@ -1,50 +1,82 @@
 import React from 'react';
-import {BasicStyles} from 'common'
+import { BasicStyles } from 'common'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSpinner } from '@fortawesome/free-solid-svg-icons'
-export default class Stack extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
+import { faCalendar, faSpinner } from '@fortawesome/free-solid-svg-icons'
+import 'react-calendar/dist/Calendar.css';
+import Calendar from 'react-calendar';
 
-  render() {
-    return (
-        <button
-            style={{...BasicStyles.btn, ...this.props.style}}
-            onClick={() => this.props.onClick()}
-            className={this.props.className}
-            >
-            {
-              this.props.iconLeft && (
-                <span style={{
-                  paddingRight: 20
-                }}>
-                  <FontAwesomeIcon icon={this.props.iconLeft} size="lg"/>
-                </span>
-              )
-            }
-            {this.props.title}
-            {
-              this.props.iconRight && (
-                <span style={{
-                  paddingLeft: 20
-                }}>
-                  <FontAwesomeIcon icon={this.props.iconRight} size="lg"/>
-                </span>
-              )
-            }
-            {
-              this.props.isLoading && (
-                <span style={{
-                  paddingLeft: 20
-                }}>
-                  <FontAwesomeIcon icon={faSpinner} size="lg" spin/>
-                </span>
-              )
-            }
-        </button>
-    )
-  }
+export default class Stack extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            show: false
+        };
+    }
+
+    getMonthEquivalent(month){
+        switch(month){
+            case 0: return 'January'
+            case 1: return 'Febuary'
+            case 2: return 'March'
+            case 3: return 'April'
+            case 4: return 'May'
+            case 5: return 'June'
+            case 6: return 'July'
+            case 7: return 'August'
+            case 8: return 'September'
+            case 9: return 'October'
+            case 10: return 'November'
+            case 11: return 'December'
+        }
+    }
+    onChange = (e) => {
+        const year = e.getFullYear()
+        const date = e.getDate()
+        const month = this.getMonthEquivalent(e.getMonth())
+        const valueLabel = month + ' ' + date + ', ' + year
+        this.props.onChange(e, valueLabel)
+    }
+
+    render() {
+        const { show, value, valueLabel } = this.state;
+        return (
+            <div style={{
+                width: '100%',
+                float: 'left',
+                ...BasicStyles.formControlContainer
+            }}>
+                <div style={{
+                    ...BasicStyles.formControl,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                }}
+                    className="cursor-hover"
+                    onClick={() => {
+                        this.setState({
+                            show: !show
+                        })
+                    }}
+                >
+                    <span>{this.props.valueLabel ? this.props.valueLabel : this.props.placeholder}</span>
+                    <span style={{
+                        paddingLeft: 20
+                    }}>
+                        <FontAwesomeIcon icon={faCalendar} size="lg" />
+                    </span>
+
+                </div>
+                {
+                    show && (
+                        <div style={{
+                            position: 'absolute'
+                        }}>
+                            <Calendar onChange={this.onChange} value={this.state.value} />
+                        </div>
+                    )
+                }
+
+            </div>
+        )
+    }
 }
