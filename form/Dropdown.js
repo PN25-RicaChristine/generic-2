@@ -1,5 +1,5 @@
 import React from 'react';
-import {BasicStyles} from 'common'
+import { BasicStyles } from 'common'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import Colors from 'common/Colors'
@@ -17,22 +17,26 @@ class Dropdown extends React.Component {
     }
   }
 
-  
-  componentDidMount(){
+
+  componentDidMount() {
     this.element.addEventListener('contextmenu', this.handleClick);
   }
 
-  handleClick = (e) => {
+  handleClick = (e = null) => {
     const { key } = this.props;
-    if (e.type === 'click') {
-        this.setState({
-            show: !this.state.show
-        })
-    } else if (e.type === 'contextmenu') {
-        this.setState({
-            show: !this.state.show
-        })
-        e.preventDefault()
+    if (e && e.type === 'click') {
+      this.setState({
+        show: !this.state.show
+      })
+    } else if (e && e.type === 'contextmenu') {
+      this.setState({
+        show: !this.state.show
+      })
+      e.preventDefault()
+    } else {
+      this.setState({
+        show: !this.state.show
+      })
     }
   }
 
@@ -53,9 +57,9 @@ class Dropdown extends React.Component {
         position: 'relative',
         ...this.props.style
       }}
-      className="href-link"
-      onClick={this.handleClick}
-      ref={ element => this.element = element }
+        className="href-link"
+        onClick={this.handleClick}
+        ref={element => this.element = element}
       >
         <div style={{
           display: 'flex',
@@ -69,15 +73,18 @@ class Dropdown extends React.Component {
           }}>{this.props.title}</b>
           <FontAwesomeIcon icon={faPlus} size="2x" />
         </div>
-          {
-            (this.props.menu && this.state.show) && (
-              <RightClickMenu
-                menu={this.props.menu}
-                from="folder"
-                onClick={(item) => {this.props.onClick(item)}}
-                />
-            )
-          }
+        {
+          (this.props.menu && this.state.show) && (
+            <RightClickMenu
+              menu={this.props.menu}
+              from="folder"
+              onClick={(item) => { this.props.onClick(item) }}
+              close={() => {
+                this.handleClick()
+              }}
+            />
+          )
+        }
       </div>
     )
   }
