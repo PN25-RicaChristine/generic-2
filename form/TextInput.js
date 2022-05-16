@@ -40,7 +40,7 @@ export default class TextInput extends React.Component {
               ...this.props.style
             }}
           >
-            {
+           {
               this.props.iconLeft && (
                 <span style={{
                   width: '10%',
