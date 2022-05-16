@@ -111,7 +111,7 @@ export default class TextInput extends React.Component {
             }
           </div>
           {
-            this.props.validation.error && (
+            this.props.validation && this.props.validation.error && (
               <label style={{
                 color: Colors.danger
               }}><b>Oops!</b> {this.props.validation.error}</label>
