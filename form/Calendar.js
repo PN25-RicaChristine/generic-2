@@ -30,15 +30,22 @@ export default class Stack extends React.Component {
 		}
 	}
 	onChange = (e) => {
-		const year = e.getFullYear()
-		const date = e.getDate()
-		const month = this.getMonthEquivalent(e.getMonth())
-		const valueLabel = month + ' ' + date + ', ' + year
-		this.props.onChange(e, valueLabel)
+		if(e.length > 0){
+			const year = e[0].getFullYear()
+			const date = e[0].getDate()
+			const month = this.getMonthEquivalent(e[0].getMonth())
+			const year1 = e[1].getFullYear()
+			const date1 = e[1].getDate()
+			const month1 = this.getMonthEquivalent(e[1].getMonth())
+			console.log('[this is it]',year, date, month, year1, month1, date1)
+			// const valueLabel = month + ' ' + date + ', ' + year + ' - ' + month1 + ' ' + date1 + ', ' + year1
+			// this.props.onChange(e, valueLabel)
+		}
 	}
 
 	render() {
 		const { show, value, valueLabel } = this.state;
+		console.log('min date', this.props.minDates)
 		return (
 			<div style={{
 				width: '100%',
@@ -90,7 +97,13 @@ export default class Stack extends React.Component {
 						<div style={{
 							position: 'absolute'
 						}}>
-							<Calendar onChange={this.onChange} value={this.state.value} minDate={new Date()} />
+							<Calendar
+								selectRange={true}
+								allowPartialRange={true}
+								onChange={this.onChange}
+								value={this.state.value}
+								minDate={this.props.minDates != undefined ? this.props.minDates : new Date()}
+							/>
 						</div>
 					)
 				}
