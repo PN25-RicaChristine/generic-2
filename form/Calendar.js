@@ -65,7 +65,7 @@ export default class Stack extends React.Component {
 				>
 					<span>{this.props.valueLabel ? this.props.valueLabel : this.props.placeholder}</span>
 					<span style={{
-						paddingLeft: 20
+						paddingLeft: '60%'
 					}}>
 						<FontAwesomeIcon icon={faCalendar} size="lg" />
 					</span>
