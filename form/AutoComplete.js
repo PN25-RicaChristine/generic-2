@@ -16,7 +16,6 @@ export default function Stack(props) {
             renderInput={(params) =>
                 <TextField
                     {...params}
-                    disableUnderline={true}
                     label={props.label}
                     variant="standard"
                     inputProps={{
