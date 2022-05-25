@@ -18,16 +18,6 @@ export default function Stack(props) {
                     {...params}
                     label={props.label}
                     variant="standard"
-                    inputProps={{
-                        underline: {
-                            "&&&:before": {
-                                borderBottom: "none"
-                            },
-                            "&&:after": {
-                                borderBottom: "none"
-                            }
-                        }
-                    }}
 
                 />
             }
