@@ -68,7 +68,8 @@ export default class TextInput extends React.Component {
               style={{
                 ...BasicStyles.formControl,
                 width: this.props.iconRight || this.props.rightLabel || this.props.iconLeft ? '90%' : BasicStyles.formControl.width,
-                float: 'left'
+                float: 'left',
+                ...this.props.inputStyle
               }}
               onChange={(e) => {
                 this.validation(e)
