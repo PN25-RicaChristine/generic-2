@@ -30,7 +30,7 @@ export default class Stack extends React.Component {
 		}
 	}
 	onChange = (e) => {
-		if(e.length > 0 && e[1] != undefined){
+		if(e.length > 0 && this.props.isRange && e[1] !== undefined){
 			const year = e[0].getFullYear()
 			const date = e[0].getDate()
 			const month = this.getMonthEquivalent(e[0].getMonth())
@@ -38,6 +38,12 @@ export default class Stack extends React.Component {
 			const date1 = e[1].getDate()
 			const month1 = this.getMonthEquivalent(e[1].getMonth())
 			const valueLabel = month + ' ' + date + ', ' + year + ' - ' + month1 + ' ' + date1 + ', ' + year1
+			this.props.onChange(e, valueLabel)
+		}else if(!this.props.isRange){
+			const year = e.getFullYear()
+			const date = e.getDate()
+			const month = this.getMonthEquivalent(e.getMonth())
+			const valueLabel = month + ' ' + date + ', ' + year
 			this.props.onChange(e, valueLabel)
 		}
 	}
@@ -96,8 +102,8 @@ export default class Stack extends React.Component {
 							position: 'absolute'
 						}}>
 							<Calendar
-								selectRange={true}
-								allowPartialRange={true}
+								selectRange={this.props.isRange ? true : false}
+								allowPartialRange={this.props.isRange ? true : false}
 								onChange={this.onChange}
 								value={this.state.value}
 								minDate={this.props.minDates != undefined ? this.props.minDates : new Date()}
