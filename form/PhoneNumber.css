@@ -1,0 +1,10 @@
+.PhoneInputInput, .PhoneInputInput::before, .PhoneInputInput::after, .PhoneInputInput:focus{
+    border: none !important;
+    outline: none !important;
+}
+
+.PhoneInputCountry{
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    font-size: 18px !important;
+}

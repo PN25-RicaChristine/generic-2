@@ -25,6 +25,7 @@ import Header from './header';
 class Stack extends React.Component {
   constructor(props) {
     super(props);
+    this.myRef = React.createRef();
     this.state = {
       text: null,
       search: null,
@@ -33,6 +34,38 @@ class Stack extends React.Component {
       activeMessage: null,
       messages: [],
       updateMessage: []
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.match && this.props.match.params && this.props.match.params.code) {
+      const { user } = this.props.state;
+      const { limit, offset, data } = this.state;
+      if (user === null) return
+      let parameter = {
+        condition: [{
+          value: 'Huening Kai Kamal',
+          column: 'title',
+          clause: '='
+        }],
+        limit: 1,
+        offset: 0
+      }
+      this.setState({ isLoading: true })
+      API.request(Routes.messengerGroupRetrieve, parameter, response => {
+        this.setState({ isLoading: false })
+        if (response.data.length > 0) {
+          this.setState({
+            activeMessage: {
+              name: response.data[0].title,
+              position: 'Sales manager, realtor',
+              id: response.data[0].id
+            }
+          })
+        }
+      }, error => {
+        this.setState({ isLoading: false })
+      })
     }
   }
 
@@ -152,21 +185,22 @@ class Stack extends React.Component {
               borderTopRightRadius: 24,
               borderBottomRightRadius: 25
             }}>
-              <Header activeMessage={activeMessage} removeActiveMessage={() => {this.setState({activeMessage: null})}}/>
+              <Header activeMessage={activeMessage} removeActiveMessage={() => { this.setState({ activeMessage: null }) }} />
               <Message
                 activeMessage={activeMessage}
                 setMessages={(messages) => {
-                  this.setState({messages: messages})
+                  this.setState({ messages: messages })
                 }}
                 updatedMessage={updateMessage}
                 clearUpdate={() => {
-                  this.setState({updateMessage: []})
+                  this.setState({ updateMessage: [] })
                 }}
+                ref={this.myRef}
               />
               <Footer
                 activeMessage={activeMessage}
                 messages={messages}
-                updateMessage={(message) => {this.setState({updatedMessage: message})}}
+                updateMessage={(message) => { this.setState({ updatedMessage: message }) }}
               />
             </div>
           }

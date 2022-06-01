@@ -37,11 +37,10 @@ export default class TextInput extends React.Component {
           <div
             style={{
               ...BasicStyles.formControlContainer,
-              ...this.props.style,
-              borderBottom: '2px solid rgb(104, 104, 104)'
+              ...this.props.style
             }}
           >
-            {
+           {
               this.props.iconLeft && (
                 <span style={{
                   width: '10%',
@@ -69,7 +68,8 @@ export default class TextInput extends React.Component {
               style={{
                 ...BasicStyles.formControl,
                 width: this.props.iconRight || this.props.rightLabel || this.props.iconLeft ? '90%' : BasicStyles.formControl.width,
-                float: 'left'
+                float: 'left',
+                ...this.props.inputStyle
               }}
               onChange={(e) => {
                 this.validation(e)
@@ -112,7 +112,7 @@ export default class TextInput extends React.Component {
             }
           </div>
           {
-            this.props.validation.error && (
+            this.props.validation && this.props.validation.error && (
               <label style={{
                 color: Colors.danger
               }}><b>Oops!</b> {this.props.validation.error}</label>
