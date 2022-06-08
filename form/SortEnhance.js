@@ -28,12 +28,10 @@ export default class SortEnhance extends React.Component {
   renderDropdown(){
     const { options } = this.props;
     return(
-      <Form.Group className="mb-3">
+      <Form.Group className="mb-3" style={{width: '30%'}}>
         <Form.Select style={{
-          height: '50px',
+          height: '40px',
           width: '100%',
-          border: 'none',
-          borderRight: 'solid 1px ' + Colors.gray
         }}
         onChange={(e) => {
           this.handleDropDownChange(e)
@@ -49,6 +47,21 @@ export default class SortEnhance extends React.Component {
     )
   }
 
+  renderInput(){
+    return (
+      <Form.Control
+        id="inputPassword5"
+        aria-describedby="passwordHelpBlock"
+        value={this.state.search}
+        type={this.state.inputType}
+        onChange={(e) => {
+          this.validation(e)
+        }}
+        onKeyPress={event => (event.key === 'Enter') && this.props.onEnter(this.state.search !== null ? `%${this.state.search}%` : '%%')}
+      />
+    )
+  }
+
   validation = (e) => {
     this.setState({
       search: e.target.value
@@ -58,17 +71,15 @@ export default class SortEnhance extends React.Component {
   render() {
     const { options } = this.props;
     return (
+
         <div style={{
           width: '100%',
           float: 'left',
-          height: '52px',
-          borderRadius: '25px',
-          borderWidth: 0.25,
-          borderColor: Colors.gray,
-          borderStyle: 'solid',
+          height: '40px',
+          display: 'flex'
         }}>
           <span style={{
-            height: '50px',
+            height: '40px',
             width: '20%',
             borderTopLeftRadius: '25px',
             borderBottomLeftRadius: '25px',
@@ -79,45 +90,15 @@ export default class SortEnhance extends React.Component {
             color: Colors.white,
             alignItems: 'center',
             justifyContent: 'center',
-            lineHeight: '50px',
+            lineHeight: '40px',
             textAlign: 'center'
           }}>
             {this.props.label}
           </span>
-          <span style={{
-            height: '50px',
-            width: '20%',
-            float: 'left',
-            margin: '0px',
-            padding: '0px',
-            backgroundColor: Colors.white,
-            color: Colors.black,
-            alignItems: 'center',
-            justifyContent: 'center',
-            lineHeight: '50px',
-            textAlign: 'center'
-          }}>
             {
               (options) && this.renderDropdown()
             }
-          </span>
-          <input
-            style={{
-              ...BasicStyles.formControl,
-              width: '60%',
-              borderWidth: '0px',
-              borderStyle: 'none',
-              borderRadius: 'unset',
-              borderTopRightRadius: '25px',
-              borderBottomRightRadius: '25px',
-            }}
-            value={this.state.search}
-            type={this.state.inputType}
-            onChange={(e) => {
-              this.validation(e)
-            }}
-            onKeyPress={event => (event.key === 'Enter') && this.props.onEnter(this.state.search !== null ? `%${this.state.search}%` : '%%')}
-            />
+            {this.renderInput()}
         </div>
     )
   }

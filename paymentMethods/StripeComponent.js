@@ -50,8 +50,10 @@ const StripeComponent = (props) => {
       email: user.email,
       name: user.information.first_name + ' ' + user.information.last_name,
       status: 'authorized',
-      next_route: '/setup/verification',
       method: 'visa'
+    }
+    if(props.hasNoRoute === undefined){
+      parameter['next_route'] = '/setup/verification'
     }
     API.request(Routes.stripeCreate, parameter, response => {
       props.retrievePaymentMethods()
@@ -142,11 +144,11 @@ const StripeComponent = (props) => {
   }
 
   return (
-    <div className="  container-100">
-        {/* <PaymentElement id="payment"></PaymentElement> */}
-        {/* <CardElement /> */}
-        {renderCardNumber('cardNumber', 'Card Number ')}
-        <div className="container-45-full-mobile" style={{marginRight: '50px', marginTop: '20px'}}>
+    <div className="container-100">
+        <div className="container-100">
+          {renderCardNumber('cardNumber', 'Card Number ')}
+        </div>
+        <div className="container-45-full-mobile" style={{marginRight: '30px', marginTop: '20px'}}>
           {renderCardExpiryElement('cardExpiry', 'Expiry Date')}
         </div>
         <div className="container-45-full-mobile" style={{marginTop: '20px'}}>
