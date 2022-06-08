@@ -22,19 +22,22 @@ class TextEditor extends Component {
       value: editor.getContents(),
       inputted: value
     });
+    this.props?.onChange(value)
   }
 
   render(){
     return (
       <div style={{float: 'left',
-        width: '100%', paddingLeft: '2%', marginTop: '2%'}}>
+        width: '100%', paddingLeft: '2%', marginTop: '2%', ...this.props.style}}>
         <ReactQuill theme="snow" value={this.state.value}  onChange={this.onEditorChange}/>
-        <Button title={'Save'} onClick={() => this.props.handleInput(this.state.inputted)} 
-          style={{
-            backgroundColor: 'transparent',
-            float: 'right',
-            color: Colors.footerIcons
+        {!this.props?.hideAction && (
+          <Button title={'Save'} onClick={() => this.props.handleInput(this.state.inputted)} 
+            style={{
+              backgroundColor: 'transparent',
+              float: 'right',
+              color: Colors.footerIcons
           }}/>
+        )}
       </div>
     );
   }
