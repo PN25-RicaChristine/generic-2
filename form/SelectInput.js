@@ -32,8 +32,8 @@ export default class SelectInput extends React.Component {
             
             >
           {
-              this.props.items.map(item => (
-                <option disabled={this.props.defaultDisabled ? true : null} value={item}>{item}</option>
+              this.props.items.map((item, index) => (
+                <option disabled={this.props.defaultDisabled ? true : null} value={index}>{item}</option>
               ))
             }
           </select>
